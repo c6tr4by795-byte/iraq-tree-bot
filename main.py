@@ -18,7 +18,7 @@ app.add_handler(MessageHandler(filters.LOCATION, location))
 app.add_handler(
     MessageHandler(
         filters.TEXT & ~filters.COMMAND,
-        request_data
+        request_data,
     )
 )
 
