@@ -28,3 +28,7 @@ def main_keyboard():
     ]
 
     return InlineKeyboardMarkup(keyboard)
+
+[
+    InlineKeyboardButton("🌱 طلب شتلة", callback_data="request_tree"),
+],
