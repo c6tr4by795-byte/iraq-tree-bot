@@ -104,9 +104,7 @@ async def buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await query.edit_message_text(
             "🏢 الشركاء",
             reply_markup=main_keyboard()
-        )
-
-    elif query.data == "news":
+        )    elif query.data == "news":
         await query.edit_message_text(
             "📢 الأخبار",
             reply_markup=main_keyboard()
@@ -138,3 +136,31 @@ async def location(update: Update, context: ContextTypes.DEFAULT_TYPE):
 الخطوة التالية:
 📷 أرسل صورة الشجرة."""
     )
+
+
+async def request_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    text = update.message.text
+
+    if ":" not in text:
+        return
+
+    await update.message.reply_text(
+        f"""✅ تم استلام طلب الشتلة بنجاح.
+
+📋 البيانات المستلمة:
+
+{text}
+
+⏳ سيتم إرسال طلبك إلى المشرف للمراجعة.
+
+بعد الموافقة سيصلك:
+
+🌳 رقم الشتلة
+📦 QR Code الخاص بالشتلة
+📍 موقع الاستلام
+📅 موعد الاستلام
+
+شكراً لمساهمتك في مشروع شجرة العراق 🌳
+"""
+    )
+    
