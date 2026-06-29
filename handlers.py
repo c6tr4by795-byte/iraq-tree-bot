@@ -1,5 +1,12 @@
-from telegram import Update
-from telegram.ext import ContextTypes
+from telegram import (
+    Update,
+    ReplyKeyboardMarkup,
+    KeyboardButton,
+)
+from telegram.ext import (
+    ContextTypes,
+)
+
 from keyboards import main_keyboard
 
 
@@ -14,21 +21,97 @@ async def buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
 
-    messages = {
-        "plant": "🌱 قسم زرع شجرة",
-        "map": "🗺️ قسم الخريطة",
-        "profile": "👤 حسابي",
-        "leaders": "🏆 لوحة المتصدرين",
-        "rewards": "🎁 المكافآت",
-        "stats": "📊 الإحصائيات",
-        "volunteer": "🤝 التطوع",
-        "partners": "🏢 الشركاء",
-        "news": "📢 الأخبار",
-        "settings": "⚙️ الإعدادات",
-        "about": "ℹ️ مشروع شجرة العراق"
-    }
+    if query.data == "plant":
 
-    await query.edit_message_text(
-        messages.get(query.data, "اختر من القائمة"),
-        reply_markup=main_keyboard()
+        keyboard = ReplyKeyboardMarkup(
+            [
+                [
+                    KeyboardButton(
+                        "📍 إرسال موقعي",
+                        request_location=True
+                    )
+                ]
+            ],
+            resize_keyboard=True,
+            one_time_keyboard=True
+        )
+
+        await query.message.reply_text(
+            "🌱 لإضافة شجرة جديدة\n\nاضغط الزر بالأسفل لإرسال موقعك.",
+            reply_markup=keyboard
+        )
+
+    elif query.data == "map":
+        await query.edit_message_text(
+            "🗺️ قريباً ستظهر الخريطة.",
+            reply_markup=main_keyboard()
+        )
+
+    elif query.data == "profile":
+        await query.edit_message_text(
+            "👤 حسابك\n\n🌳 الأشجار: 0\n⭐ النقاط: 0",
+            reply_markup=main_keyboard()
+        )
+
+    elif query.data == "leaders":
+        await query.edit_message_text(
+            "🏆 لوحة المتصدرين",
+            reply_markup=main_keyboard()
+        )
+
+    elif query.data == "rewards":
+        await query.edit_message_text(
+            "🎁 المكافآت",
+            reply_markup=main_keyboard()
+        )
+
+    elif query.data == "stats":
+        await query.edit_message_text(
+            "📊 الإحصائيات",
+            reply_markup=main_keyboard()
+        )
+
+    elif query.data == "volunteer":
+        await query.edit_message_text(
+            "🤝 التطوع",
+            reply_markup=main_keyboard()
+        )
+
+    elif query.data == "partners":
+        await query.edit_message_text(
+            "🏢 الشركاء",
+            reply_markup=main_keyboard()
+        )
+
+    elif query.data == "news":
+        await query.edit_message_text(
+            "📢 الأخبار",
+            reply_markup=main_keyboard()
+        )
+
+    elif query.data == "settings":
+        await query.edit_message_text(
+            "⚙️ الإعدادات",
+            reply_markup=main_keyboard()
+        )
+
+    elif query.data == "about":
+        await query.edit_message_text(
+            "ℹ️ مشروع شجرة العراق",
+            reply_markup=main_keyboard()
+        )
+
+
+async def location(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    lat = update.message.location.latitude
+    lon = update.message.location.longitude
+
+    await update.message.reply_text(
+        f"""✅ تم استلام موقعك بنجاح.
+
+📍 Latitude: {lat}
+📍 Longitude: {lon}
+
+الخطوة التالية:
+📷 أرسل صورة الشجرة."""
     )
