@@ -1,5 +1,5 @@
 
-TOKEN = ""8633332339:AAFaw4eQ09genK4d5luEoTgieGYzvmnoagk
+TOKEN = "8633332339:AAFaw4eQ09genK4d5luEoTgieGYzvmnoagk"
 
 ADMIN_ID = 123456789
 
