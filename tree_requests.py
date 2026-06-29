@@ -11,9 +11,9 @@ async def request_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     # رسالة للمشرف
-    await context.bot.send_message(
-        chat_id=ADMIN_ID,
-        text=f"""📥 طلب شتلة جديد
+    
+        await update.message.reply_text("وصلت الدالة")
+        طلب شتلة جديدة
 
 👤 المستخدم:
 {update.effective_user.full_name}
