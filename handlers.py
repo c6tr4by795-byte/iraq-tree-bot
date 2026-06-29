@@ -64,3 +64,27 @@ async def location(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "✅ وصل الموقع بنجاح."
     )
+
+
+elif query.data == "request_tree":
+    await query.edit_message_text(
+        """🌱 طلب شتلة
+
+لإرسال طلب شتلة اضغط الزر بالأسفل ثم اكتب معلوماتك بالترتيب:
+
+• الاسم الكامل
+• رقم الهاتف
+• المحافظة
+• القضاء
+• المنطقة
+• عدد الشتلات
+
+مثال:
+
+الاسم: أحمد علي
+الهاتف: 07XXXXXXXXX
+المحافظة: النجف القضاء: النالمنطقة:حي الامير
+العدد: 3
+""",
+        reply_markup=main_keyboard()
+    )
