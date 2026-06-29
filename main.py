@@ -10,7 +10,8 @@ from telegram.ext import (
     ContextTypes,
 )
 
-TOKEN = "8633332339:AAFaw4eQ09genK4d5luEoTgieGYzvmnoagk"
+from config import TOKEN
+from keyboards import main_keyboard
 
 def main_keyboard():
     keyboard = [
