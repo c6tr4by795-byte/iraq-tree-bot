@@ -7,6 +7,9 @@ def main_keyboard():
             InlineKeyboardButton("🗺️ الخريطة", callback_data="map"),
         ],
         [
+            InlineKeyboardButton("🌿 طلب شتلة", callback_data="request_tree"),
+        ],
+        [
             InlineKeyboardButton("👤 حسابي", callback_data="profile"),
             InlineKeyboardButton("🏆 المتصدرون", callback_data="leaders"),
         ],
@@ -28,7 +31,3 @@ def main_keyboard():
     ]
 
     return InlineKeyboardMarkup(keyboard)
-
-[
-    InlineKeyboardButton("🌱 طلب شتلة", callback_data="request_tree"),
-],
