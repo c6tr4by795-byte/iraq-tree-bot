@@ -13,27 +13,7 @@ from telegram.ext import (
 from config import TOKEN
 from keyboards import main_keyboard
 
-def main_keyboard():
-    keyboard = [
-        [InlineKeyboardButton("🌱 زرع شجرة", callback_data="plant"),
-         InlineKeyboardButton("🗺️ الخريطة", callback_data="map")],
-
-        [InlineKeyboardButton("👤 حسابي", callback_data="profile"),
-         InlineKeyboardButton("🏆 المتصدرون", callback_data="leaders")],
-
-        [InlineKeyboardButton("🎁 المكافآت", callback_data="rewards"),
-         InlineKeyboardButton("📊 الإحصائيات", callback_data="stats")],
-
-        [InlineKeyboardButton("🤝 التطوع", callback_data="volunteer"),
-         InlineKeyboardButton("🏢 الشركاء", callback_data="partners")],
-
-        [InlineKeyboardButton("📢 الأخبار", callback_data="news"),
-         InlineKeyboardButton("⚙️ الإعدادات", callback_data="settings")],
-
-        [InlineKeyboardButton("ℹ️ عن المشروع", callback_data="about")]
-    ]
-    return InlineKeyboardMarkup(keyboard)
-
+    
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
