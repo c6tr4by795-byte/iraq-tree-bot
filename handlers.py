@@ -66,11 +66,15 @@ async def location(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
+
+    if query.data == "plant":
+    ...
+
 elif query.data == "request_tree":
     await query.edit_message_text(
         """🌱 طلب شتلة
 
-لإرسال طلب شتلة اضغط الزر بالأسفل ثم اكتب معلوماتك بالترتيب:
+اكتب معلوماتك بالترتيب:
 
 • الاسم الكامل
 • رقم الهاتف
@@ -78,13 +82,9 @@ elif query.data == "request_tree":
 • القضاء
 • المنطقة
 • عدد الشتلات
-
-مثال:
-
-الاسم: أحمد علي
-الهاتف: 07XXXXXXXXX
-المحافظة: النجف القضاء: النالمنطقة:حي الامير
-العدد: 3
 """,
         reply_markup=main_keyboard()
     )
+
+elif query.data == "map":
+    ...
