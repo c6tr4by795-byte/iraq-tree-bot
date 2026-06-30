@@ -4,11 +4,10 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 def main_keyboard():
     keyboard = [
         [
-            InlineKeyboardButton("🌱 زرع شجرة", callback_data="plant"),
-            InlineKeyboardButton("🗺️ الخريطة", callback_data="map"),
+            InlineKeyboardButton("🌿 طلب شتلة", callback_data="request_tree"),
         ],
         [
-            InlineKeyboardButton("🌿 طلب شتلة", callback_data="request_tree"),
+            InlineKeyboardButton("🗺️ الخريطة", callback_data="map"),
         ],
         [
             InlineKeyboardButton("👤 حسابي", callback_data="profile"),
