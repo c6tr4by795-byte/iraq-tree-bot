@@ -1,6 +1,9 @@
 from telegram import Update
 from telegram.ext import ContextTypes
 
+from config import ADMIN_ID
+from admin import admin_keyboard
+
 users = {}
 
 
@@ -14,62 +17,58 @@ async def request_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if user_id not in users:
         users[user_id] = {}
 
-    # الاسم
+    data = users[user_id]
+
     if context.user_data["step"] == "name":
-        users[user_id]["name"] = text
+        data["name"] = text
         context.user_data["step"] = "phone"
-
-        await update.message.reply_text(
-            "📱 اكتب رقم الهاتف:"
-        )
+        await update.message.reply_text("📱 اكتب رقم الهاتف:")
         return
 
-    # الهاتف
     if context.user_data["step"] == "phone":
-        users[user_id]["phone"] = text
+        data["phone"] = text
         context.user_data["step"] = "province"
-
-        await update.message.reply_text(
-            "🏙️ اكتب المحافظة:"
-        )
+        await update.message.reply_text("🏙️ اكتب المحافظة:")
         return
 
-    # المحافظة
     if context.user_data["step"] == "province":
-        users[user_id]["province"] = text
+        data["province"] = text
         context.user_data["step"] = "district"
-
-        await update.message.reply_text(
-            "📍 اكتب القضاء:"
-        )
+        await update.message.reply_text("📍 اكتب القضاء:")
         return
 
-    # القضاء
     if context.user_data["step"] == "district":
-        users[user_id]["district"] = text
+        data["district"] = text
         context.user_data["step"] = "area"
-
-        await update.message.reply_text(
-            "📌 اكتب المنطقة:"
-        )
+        await update.message.reply_text("📌 اكتب المنطقة:")
         return
 
-    # المنطقة
     if context.user_data["step"] == "area":
-        users[user_id]["area"] = text
+        data["area"] = text
         context.user_data["step"] = "count"
-
-        await update.message.reply_text(
-            "🌱 كم شتلة تريد؟"
-        )
+        await update.message.reply_text("🌱 كم شتلة تريد؟")
         return
 
-    # العدد
     if context.user_data["step"] == "count":
-        users[user_id]["count"] = text
+        data["count"] = text
 
-        await update.message.reply_text(
-            "✅ تم استلام طلبك وسيتم إرساله إلى المشرف."
+        await context.bot.send_message(
+            chat_id=ADMIN_ID,
+            text=f"""📥 طلب شتلة جديد
+
+👤 الاسم: {data['name']}
+📱 الهاتف: {data['phone']}
+🏙️ المحافظة: {data['province']}
+📍 القضاء: {data['district']}
+📌 المنطقة: {data['area']}
+🌱 العدد: {data['count']}
+""",
+            reply_markup=admin_keyboard(user_id)
         )
 
+        await update.message.reply_text(
+            "✅ تم إرسال طلبك إلى المشرف."
+        )
+
+        del users[user_id]
         del context.user_data["step"]
