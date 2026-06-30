@@ -1,5 +1,11 @@
+TOKEN = "حط التوكن هنا"
 
-TOKEN = "8897654976:AAGVdA8NLDRkLOw8nbxc439wnLCwbCZHeAY"
-ADMIN_ID =1332234811
+ADMIN_ID = 1332234811
 
-BOT_NAME = "مشروع شجرة العراق"
+PROJECT_NAME = "مشروع شجرة العراق"
+
+PICKUP_LOCATION = "سيتم تحديد موقع الاستلام"
+
+PICKUP_DATE = "سيتم تحديد الموعد"
+
+TREE_PREFIX = "IRQ"
