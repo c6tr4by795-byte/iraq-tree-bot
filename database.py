@@ -22,8 +22,11 @@ def create_tables():
         area TEXT,
         trees_count INTEGER,
         status TEXT,
-        tree_code TEXT,
+        tree_code TEXT UNIQUE,
         qr_code TEXT,
+        latitude REAL,
+        longitude REAL,
+        image_id TEXT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
     """)
@@ -56,9 +59,12 @@ def add_request(
             trees_count,
             status,
             tree_code,
-            qr_code
+            qr_code,
+            latitude,
+            longitude,
+            image_id
         )
-        VALUES(?,?,?,?,?,?,?,?,?,?)
+        VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)
         """,
         (
             telegram_id,
@@ -70,6 +76,9 @@ def add_request(
             trees_count,
             "pending",
             "",
+            "",
+            None,
+            None,
             "",
         ),
     )
@@ -88,7 +97,23 @@ def get_request(request_id):
 
     cur.execute(
         "SELECT * FROM requests WHERE id=?",
-        (request_id,)
+        (request_id,),
+    )
+
+    row = cur.fetchone()
+
+    conn.close()
+
+    return row
+
+
+def get_tree(tree_code):
+    conn = connect()
+    cur = conn.cursor()
+
+    cur.execute(
+        "SELECT * FROM requests WHERE tree_code=?",
+        (tree_code,),
     )
 
     row = cur.fetchone()
@@ -105,7 +130,10 @@ def approve_request(request_id, tree_code):
     cur.execute(
         """
         UPDATE requests
-        SET status=?, tree_code=?, qr_code=?
+        SET
+            status=?,
+            tree_code=?,
+            qr_code=?
         WHERE id=?
         """,
         (
