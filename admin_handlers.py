@@ -2,52 +2,75 @@ from telegram import Update
 from telegram.ext import ContextTypes
 
 from qr import create_qr
-
-
-tree_number = 1
+from database import (
+    get_request,
+    approve_request,
+    reject_request,
+)
+from config import TREE_PREFIX
 
 
 async def admin_buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    global tree_number
 
     query = update.callback_query
     await query.answer()
 
     data = query.data
 
-    if data.startswith("approve_"):
+    # موافقة
+    if data.startswith("approve:"):
 
-        user_id = int(data.split("_")[1])
+        request_id = int(data.split(":")[1])
 
-        tree_id = f"IRQ-{tree_number:06d}"
-        tree_number += 1
+        request = get_request(request_id)
 
-        qr = create_qr(tree_id)
+        if not request:
+            await query.edit_message_text("❌ الطلب غير موجود.")
+            return
+
+        telegram_id = request[1]
+
+        tree_code = f"{TREE_PREFIX}-{request_id:06d}"
+
+        approve_request(request_id, tree_code)
+
+        qr = create_qr(tree_code)
 
         await context.bot.send_photo(
-            chat_id=user_id,
+            chat_id=telegram_id,
             photo=qr,
-            caption=f"""🎉 تمت الموافقة على طلبك.
+            caption=f"""🎉 تمت الموافقة على طلبك
 
 🌳 رقم الشتلة:
-{tree_id}
+{tree_code}
 
-📦 هذا هو QR الخاص بالشتلة.
+📦 هذا هو QR الخاص بك.
 
-سيتم إعلامك بموقع وموعد الاستلام قريباً.
+سيتم إرسال موقع وموعد الاستلام قريباً.
 """
         )
 
         await query.edit_message_text(
-            f"✅ تمت الموافقة.\n\nرقم الشتلة: {tree_id}"
+            f"✅ تمت الموافقة على الطلب\n\n🌳 {tree_code}"
         )
 
-    elif data.startswith("reject_"):
+    # رفض
+    elif data.startswith("reject:"):
 
-        user_id = int(data.split("_")[1])
+        request_id = int(data.split(":")[1])
+
+        request = get_request(request_id)
+
+        if not request:
+            await query.edit_message_text("❌ الطلب غير موجود.")
+            return
+
+        telegram_id = request[1]
+
+        reject_request(request_id)
 
         await context.bot.send_message(
-            chat_id=user_id,
+            chat_id=telegram_id,
             text="❌ تم رفض طلبك."
         )
 
