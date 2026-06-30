@@ -3,31 +3,72 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
 def main_keyboard():
     keyboard = [
+
         [
-            InlineKeyboardButton("🌿 طلب شتلة", callback_data="request_tree"),
+            InlineKeyboardButton(
+                "🌿 طلب شتلة",
+                callback_data="request_tree"
+            )
         ],
+
         [
-            InlineKeyboardButton("🗺️ الخريطة", callback_data="map"),
+            InlineKeyboardButton(
+                "👤 حسابي",
+                callback_data="profile"
+            ),
+            InlineKeyboardButton(
+                "🗺️ الخريطة",
+                callback_data="map"
+            )
         ],
+
         [
-            InlineKeyboardButton("👤 حسابي", callback_data="profile"),
-            InlineKeyboardButton("🏆 المتصدرون", callback_data="leaders"),
+            InlineKeyboardButton(
+                "🏆 المتصدرون",
+                callback_data="leaders"
+            ),
+            InlineKeyboardButton(
+                "🎁 المكافآت",
+                callback_data="rewards"
+            )
         ],
+
         [
-            InlineKeyboardButton("🎁 المكافآت", callback_data="rewards"),
-            InlineKeyboardButton("📊 الإحصائيات", callback_data="stats"),
+            InlineKeyboardButton(
+                "📊 الإحصائيات",
+                callback_data="stats"
+            ),
+            InlineKeyboardButton(
+                "🤝 التطوع",
+                callback_data="volunteer"
+            )
         ],
+
         [
-            InlineKeyboardButton("🤝 التطوع", callback_data="volunteer"),
-            InlineKeyboardButton("🏢 الشركاء", callback_data="partners"),
+            InlineKeyboardButton(
+                "🏢 الشركاء",
+                callback_data="partners"
+            ),
+            InlineKeyboardButton(
+                "📢 الأخبار",
+                callback_data="news"
+            )
         ],
+
         [
-            InlineKeyboardButton("📢 الأخبار", callback_data="news"),
-            InlineKeyboardButton("⚙️ الإعدادات", callback_data="settings"),
+            InlineKeyboardButton(
+                "⚙️ الإعدادات",
+                callback_data="settings"
+            )
         ],
+
         [
-            InlineKeyboardButton("ℹ️ عن المشروع", callback_data="about"),
-        ],
+            InlineKeyboardButton(
+                "ℹ️ عن المشروع",
+                callback_data="about"
+            )
+        ]
+
     ]
 
     return InlineKeyboardMarkup(keyboard)
