@@ -34,51 +34,78 @@ async def buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
         await query.message.reply_text(
-            "🌱 لإضافة شجرة جديدة\n\nاضغط الزر بالأسفل لإرسال موقعك.",
+            "🌳 زرع شجرة\n\n"
+            "📍 أرسل موقع الزراعة.",
             reply_markup=keyboard
         )
 
     elif query.data == "request_tree":
-        await query.edit_message_text(
-            "🌱 أرسل معلومات طلب الشتلة على شكل:\n\n"
-            "الاسم: ...\n"
-            "الهاتف: ...\n"
-            "المحافظة: ...\n"
-            "القضاء: ...\n"
-            "المنطقة: ...\n"
-            "العدد: ...",
-            reply_markup=main_keyboard()
+        context.user_data["step"] = "name"
+
+        await query.message.reply_text(
+            "🌱 طلب شتلة\n\n"
+            "👤 اكتب اسمك الكامل:"
         )
 
     elif query.data == "map":
-        await query.edit_message_text("🗺️ قريباً ستظهر الخريطة.", reply_markup=main_keyboard())
+        await query.edit_message_text(
+            "🗺️ قريباً ستظهر الخريطة.",
+            reply_markup=main_keyboard()
+        )
 
     elif query.data == "profile":
-        await query.edit_message_text("👤 حسابك", reply_markup=main_keyboard())
+        await query.edit_message_text(
+            "👤 حسابك",
+            reply_markup=main_keyboard()
+        )
 
     elif query.data == "leaders":
-        await query.edit_message_text("🏆 لوحة المتصدرين", reply_markup=main_keyboard())
+        await query.edit_message_text(
+            "🏆 لوحة المتصدرين",
+            reply_markup=main_keyboard()
+        )
 
     elif query.data == "rewards":
-        await query.edit_message_text("🎁 المكافآت", reply_markup=main_keyboard())
+        await query.edit_message_text(
+            "🎁 المكافآت",
+            reply_markup=main_keyboard()
+        )
 
     elif query.data == "stats":
-        await query.edit_message_text("📊 الإحصائيات", reply_markup=main_keyboard())
+        await query.edit_message_text(
+            "📊 الإحصائيات",
+            reply_markup=main_keyboard()
+        )
 
     elif query.data == "volunteer":
-        await query.edit_message_text("🤝 التطوع", reply_markup=main_keyboard())
+        await query.edit_message_text(
+            "🤝 التطوع",
+            reply_markup=main_keyboard()
+        )
 
     elif query.data == "partners":
-        await query.edit_message_text("🏢 الشركاء", reply_markup=main_keyboard())
+        await query.edit_message_text(
+            "🏢 الشركاء",
+            reply_markup=main_keyboard()
+        )
 
     elif query.data == "news":
-        await query.edit_message_text("📢 الأخبار", reply_markup=main_keyboard())
+        await query.edit_message_text(
+            "📢 الأخبار",
+            reply_markup=main_keyboard()
+        )
 
     elif query.data == "settings":
-        await query.edit_message_text("⚙️ الإعدادات", reply_markup=main_keyboard())
+        await query.edit_message_text(
+            "⚙️ الإعدادات",
+            reply_markup=main_keyboard()
+        )
 
     elif query.data == "about":
-        await query.edit_message_text("ℹ️ مشروع شجرة العراق", reply_markup=main_keyboard())
+        await query.edit_message_text(
+            "ℹ️ مشروع شجرة العراق",
+            reply_markup=main_keyboard()
+        )
 
 
 async def location(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -86,11 +113,10 @@ async def location(update: Update, context: ContextTypes.DEFAULT_TYPE):
     lon = update.message.location.longitude
 
     await update.message.reply_text(
-        f"""✅ تم استلام موقعك بنجاح.
+        f"""✅ تم استلام موقع الزراعة.
 
 📍 Latitude: {lat}
 📍 Longitude: {lon}
 
-الخطوة التالية:
-📷 أرسل صورة الشجرة."""
+📷 الآن أرسل صورة الشجرة."""
     )
