@@ -82,6 +82,22 @@ def add_request(
     return request_id
 
 
+def get_request(request_id):
+    conn = connect()
+    cur = conn.cursor()
+
+    cur.execute(
+        "SELECT * FROM requests WHERE id=?",
+        (request_id,)
+    )
+
+    row = cur.fetchone()
+
+    conn.close()
+
+    return row
+
+
 def approve_request(request_id, tree_code):
     conn = connect()
     cur = conn.cursor()
@@ -89,16 +105,33 @@ def approve_request(request_id, tree_code):
     cur.execute(
         """
         UPDATE requests
-        SET
-            status=?,
-            tree_code=?,
-            qr_code=?
+        SET status=?, tree_code=?, qr_code=?
         WHERE id=?
         """,
         (
             "approved",
             tree_code,
             tree_code,
+            request_id,
+        ),
+    )
+
+    conn.commit()
+    conn.close()
+
+
+def reject_request(request_id):
+    conn = connect()
+    cur = conn.cursor()
+
+    cur.execute(
+        """
+        UPDATE requests
+        SET status=?
+        WHERE id=?
+        """,
+        (
+            "rejected",
             request_id,
         ),
     )
