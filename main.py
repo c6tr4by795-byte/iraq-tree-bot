@@ -7,14 +7,31 @@ from telegram.ext import (
 )
 
 from config import TOKEN
-from handlers import start, buttons, location
+from handlers import start, buttons
 from request_tree import request_data
+from admin_handlers import admin_buttons
 
 app = Application.builder().token(TOKEN).build()
 
 app.add_handler(CommandHandler("start", start))
-app.add_handler(CallbackQueryHandler(buttons))
-app.add_handler(MessageHandler(filters.LOCATION, location))
+
+# أزرار المستخدم
+app.add_handler(
+    CallbackQueryHandler(
+        buttons,
+        pattern="^(request_tree|map|profile|leaders|rewards|stats|volunteer|partners|news|settings|about)$"
+    )
+)
+
+# أزرار المشرف
+app.add_handler(
+    CallbackQueryHandler(
+        admin_buttons,
+        pattern="^(approve_|reject_).*"
+    )
+)
+
+# استقبال رسائل طلب الشتلة
 app.add_handler(
     MessageHandler(
         filters.TEXT & ~filters.COMMAND,
