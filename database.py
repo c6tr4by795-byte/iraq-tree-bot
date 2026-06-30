@@ -1,6 +1,5 @@
 import sqlite3
 
-
 DB_NAME = "trees.db"
 
 
@@ -13,7 +12,7 @@ def create_tables():
     cur = conn.cursor()
 
     cur.execute("""
-    CREATE TABLE IF NOT EXISTS tree_requests(
+    CREATE TABLE IF NOT EXISTS requests(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         telegram_id INTEGER,
         full_name TEXT,
@@ -21,9 +20,11 @@ def create_tables():
         province TEXT,
         district TEXT,
         area TEXT,
-        count INTEGER,
+        trees_count INTEGER,
         status TEXT,
-        tree_code TEXT
+        tree_code TEXT,
+        qr_code TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
     """)
 
@@ -38,26 +39,26 @@ def add_request(
     province,
     district,
     area,
-    count
+    trees_count,
 ):
     conn = connect()
     cur = conn.cursor()
 
     cur.execute(
         """
-        INSERT INTO tree_requests
-        (
+        INSERT INTO requests(
             telegram_id,
             full_name,
             phone,
             province,
             district,
             area,
-            count,
+            trees_count,
             status,
-            tree_code
+            tree_code,
+            qr_code
         )
-        VALUES (?,?,?,?,?,?,?,?,?)
+        VALUES(?,?,?,?,?,?,?,?,?,?)
         """,
         (
             telegram_id,
@@ -66,10 +67,11 @@ def add_request(
             province,
             district,
             area,
-            count,
+            trees_count,
             "pending",
-            ""
-        )
+            "",
+            "",
+        ),
     )
 
     request_id = cur.lastrowid
@@ -86,15 +88,19 @@ def approve_request(request_id, tree_code):
 
     cur.execute(
         """
-        UPDATE tree_requests
-        SET status=?, tree_code=?
+        UPDATE requests
+        SET
+            status=?,
+            tree_code=?,
+            qr_code=?
         WHERE id=?
         """,
         (
             "approved",
             tree_code,
-            request_id
-        )
+            tree_code,
+            request_id,
+        ),
     )
 
     conn.commit()
