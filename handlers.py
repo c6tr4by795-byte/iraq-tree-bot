@@ -2,34 +2,63 @@ from telegram import Update
 from telegram.ext import ContextTypes
 
 from keyboards import main_keyboard
+from database import get_tree
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
-    # إذا فتح البوت عن طريق QR
+    # فتح البوت عن طريق QR
     if context.args:
 
         tree_code = context.args[0]
 
-        await update.message.reply_text(
-            f"""🌳 معلومات الشجرة
+        tree = get_tree(tree_code)
+
+        if tree:
+
+            await update.message.reply_text(
+                f"""🌳 معلومات الشجرة
 
 🆔 رقم الشجرة:
-{tree_code}
+{tree[9]}
 
-⏳ جاري تحميل بيانات الشجرة...
+👤 صاحب الشتلة:
+{tree[2]}
+
+🏙️ المحافظة:
+{tree[4]}
+
+📍 القضاء:
+{tree[5]}
+
+📌 المنطقة:
+{tree[6]}
+
+🌱 عدد الشتلات:
+{tree[7]}
+
+📋 الحالة:
+{tree[8]}
+
+📅 تاريخ الطلب:
+{tree[13]}
 """
-        )
+            )
+
+        else:
+
+            await update.message.reply_text(
+                "❌ هذه الشجرة غير موجودة."
+            )
 
         return
 
-    # البداية العادية
     context.user_data.clear()
 
     await update.message.reply_text(
         """🌳 أهلاً بك في مشروع شجرة العراق
 
-ساهم في زيادة المساحات الخضراء واطلب شتلتك الآن.""",
+ساهم بزراعة العراق... اطلب شتلتك الآن.""",
         reply_markup=main_keyboard()
     )
 
@@ -56,49 +85,49 @@ async def buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     elif query.data == "map":
         await query.edit_message_text(
-            "🗺️ الخريطة قريباً",
+            "🗺️ قريباً",
             reply_markup=main_keyboard()
         )
 
     elif query.data == "leaders":
         await query.edit_message_text(
-            "🏆 المتصدرون قريباً",
+            "🏆 قريباً",
             reply_markup=main_keyboard()
         )
 
     elif query.data == "rewards":
         await query.edit_message_text(
-            "🎁 المكافآت قريباً",
+            "🎁 قريباً",
             reply_markup=main_keyboard()
         )
 
     elif query.data == "stats":
         await query.edit_message_text(
-            "📊 الإحصائيات قريباً",
+            "📊 قريباً",
             reply_markup=main_keyboard()
         )
 
     elif query.data == "volunteer":
         await query.edit_message_text(
-            "🤝 التطوع قريباً",
+            "🤝 قريباً",
             reply_markup=main_keyboard()
         )
 
     elif query.data == "partners":
         await query.edit_message_text(
-            "🏢 الشركاء قريباً",
+            "🏢 قريباً",
             reply_markup=main_keyboard()
         )
 
     elif query.data == "news":
         await query.edit_message_text(
-            "📢 الأخبار قريباً",
+            "📢 قريباً",
             reply_markup=main_keyboard()
         )
 
     elif query.data == "settings":
         await query.edit_message_text(
-            "⚙️ الإعدادات قريباً",
+            "⚙️ قريباً",
             reply_markup=main_keyboard()
         )
 
