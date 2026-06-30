@@ -1,16 +1,15 @@
-from telegram import (
-    Update,
-    ReplyKeyboardMarkup,
-    KeyboardButton,
-)
+from telegram import Update
 from telegram.ext import ContextTypes
 
 from keyboards import main_keyboard
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    context.user_data.clear()
+
     await update.message.reply_text(
-        "🌳 أهلاً بك في مشروع شجرة العراق\n\nاختر الخدمة التي تريدها:",
+        "🌳 أهلاً بك في مشروع شجرة العراق\n\n"
+        "ساهم في زيادة المساحات الخضراء واطلب شتلتك الآن.",
         reply_markup=main_keyboard()
     )
 
@@ -19,27 +18,9 @@ async def buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
 
-    if query.data == "plant":
-        keyboard = ReplyKeyboardMarkup(
-            [
-                [
-                    KeyboardButton(
-                        "📍 إرسال موقعي",
-                        request_location=True
-                    )
-                ]
-            ],
-            resize_keyboard=True,
-            one_time_keyboard=True
-        )
+    if query.data == "request_tree":
 
-        await query.message.reply_text(
-            "🌳 زرع شجرة\n\n"
-            "📍 أرسل موقع الزراعة.",
-            reply_markup=keyboard
-        )
-
-    elif query.data == "request_tree":
+        context.user_data.clear()
         context.user_data["step"] = "name"
 
         await query.message.reply_text(
@@ -47,76 +28,65 @@ async def buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "👤 اكتب اسمك الكامل:"
         )
 
-    elif query.data == "map":
+    elif query.data == "profile":
         await query.edit_message_text(
-            "🗺️ قريباً ستظهر الخريطة.",
+            "👤 حسابك\n\n"
+            "🌳 عدد الأشجار: 0\n"
+            "⭐ النقاط: 0",
             reply_markup=main_keyboard()
         )
 
-    elif query.data == "profile":
+    elif query.data == "map":
         await query.edit_message_text(
-            "👤 حسابك",
+            "🗺️ قريباً سيتم إطلاق خريطة الأشجار.",
             reply_markup=main_keyboard()
         )
 
     elif query.data == "leaders":
         await query.edit_message_text(
-            "🏆 لوحة المتصدرين",
+            "🏆 لوحة المتصدرين قريباً.",
             reply_markup=main_keyboard()
         )
 
     elif query.data == "rewards":
         await query.edit_message_text(
-            "🎁 المكافآت",
+            "🎁 نظام المكافآت قريباً.",
             reply_markup=main_keyboard()
         )
 
     elif query.data == "stats":
         await query.edit_message_text(
-            "📊 الإحصائيات",
+            "📊 الإحصائيات قريباً.",
             reply_markup=main_keyboard()
         )
 
     elif query.data == "volunteer":
         await query.edit_message_text(
-            "🤝 التطوع",
+            "🤝 التسجيل كمتطوع قريباً.",
             reply_markup=main_keyboard()
         )
 
     elif query.data == "partners":
         await query.edit_message_text(
-            "🏢 الشركاء",
+            "🏢 شركاء المشروع قريباً.",
             reply_markup=main_keyboard()
         )
 
     elif query.data == "news":
         await query.edit_message_text(
-            "📢 الأخبار",
+            "📢 آخر أخبار المشروع قريباً.",
             reply_markup=main_keyboard()
         )
 
     elif query.data == "settings":
         await query.edit_message_text(
-            "⚙️ الإعدادات",
+            "⚙️ الإعدادات قريباً.",
             reply_markup=main_keyboard()
         )
 
     elif query.data == "about":
         await query.edit_message_text(
-            "ℹ️ مشروع شجرة العراق",
+            "🌳 مشروع شجرة العراق\n\n"
+            "مشروع يهدف إلى زيادة المساحات الخضراء في العراق.",
             reply_markup=main_keyboard()
         )
-
-
-async def location(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    lat = update.message.location.latitude
-    lon = update.message.location.longitude
-
-    await update.message.reply_text(
-        f"""✅ تم استلام موقع الزراعة.
-
-📍 Latitude: {lat}
-📍 Longitude: {lon}
-
-📷 الآن أرسل صورة الشجرة."""
-    )
