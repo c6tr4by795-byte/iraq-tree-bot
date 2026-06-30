@@ -13,13 +13,14 @@ from admin_handlers import admin_buttons
 
 app = Application.builder().token(TOKEN).build()
 
+# أمر البداية
 app.add_handler(CommandHandler("start", start))
 
 # أزرار المستخدم
 app.add_handler(
     CallbackQueryHandler(
         buttons,
-        pattern="^(request_tree|map|profile|leaders|rewards|stats|volunteer|partners|news|settings|about)$"
+        pattern="^(request_tree|profile|map|leaders|rewards|stats|volunteer|partners|news|settings|about)$",
     )
 )
 
@@ -27,11 +28,11 @@ app.add_handler(
 app.add_handler(
     CallbackQueryHandler(
         admin_buttons,
-        pattern="^(approve_|reject_).*"
+        pattern="^(approve:|reject:).*",
     )
 )
 
-# استقبال رسائل طلب الشتلة
+# استقبال رسائل المستخدم
 app.add_handler(
     MessageHandler(
         filters.TEXT & ~filters.COMMAND,
