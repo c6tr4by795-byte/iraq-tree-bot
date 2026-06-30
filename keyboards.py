@@ -1,20 +1,34 @@
-from telegram.ext import (
-    Application,
-    CommandHandler,
-    CallbackQueryHandler,
-    MessageHandler,
-    filters,
-)
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
-from config import TOKEN
-from handlers import start, buttons, location
-from tree_requests import request_data
 
-app = Application.builder().token(TOKEN).build()
+def main_keyboard():
+    keyboard = [
+        [
+            InlineKeyboardButton("🌱 زرع شجرة", callback_data="plant"),
+            InlineKeyboardButton("🗺️ الخريطة", callback_data="map"),
+        ],
+        [
+            InlineKeyboardButton("🌿 طلب شتلة", callback_data="request_tree"),
+        ],
+        [
+            InlineKeyboardButton("👤 حسابي", callback_data="profile"),
+            InlineKeyboardButton("🏆 المتصدرون", callback_data="leaders"),
+        ],
+        [
+            InlineKeyboardButton("🎁 المكافآت", callback_data="rewards"),
+            InlineKeyboardButton("📊 الإحصائيات", callback_data="stats"),
+        ],
+        [
+            InlineKeyboardButton("🤝 التطوع", callback_data="volunteer"),
+            InlineKeyboardButton("🏢 الشركاء", callback_data="partners"),
+        ],
+        [
+            InlineKeyboardButton("📢 الأخبار", callback_data="news"),
+            InlineKeyboardButton("⚙️ الإعدادات", callback_data="settings"),
+        ],
+        [
+            InlineKeyboardButton("ℹ️ عن المشروع", callback_data="about"),
+        ],
+    ]
 
-app.add_handler(CommandHandler("start", start))
-app.add_handler(CallbackQueryHandler(buttons))
-app.add_handler(MessageHandler(filters.LOCATION, location))
-app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, request_data))
-
-app.run_polling()
+    return InlineKeyboardMarkup(keyboard)
